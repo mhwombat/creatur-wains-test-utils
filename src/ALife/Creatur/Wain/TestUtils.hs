@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- |
 -- Module      :  ALife.Creatur.Wain.TestUtils
--- Copyright   :  (c) Amy de Buitléir 2013-2015
+-- Copyright   :  (c) Amy de Buitléir 2013-2016
 -- License     :  BSD-style
 -- Maintainer  :  amy@nualeargais.ie
 -- Stability   :  experimental
@@ -24,11 +24,17 @@ module ALife.Creatur.Wain.TestUtils
 import qualified ALife.Creatur.Genetics.BRGCWord8 as W8
 import ALife.Creatur.Genetics.Diploid (Diploid, express)
 import ALife.Creatur.Util (fromEither)
+import ALife.Creatur.Wain.UnitInterval (UIDouble, interval, doubleToUI)
 import ALife.Creatur.Wain.Util (scaleFromWord8, scaleWord8ToInt)
 import Control.Monad.State.Lazy (runState)
 import Data.Serialize (Serialize, encode, decode)
 import Data.Word (Word8)
 import Test.QuickCheck
+
+-- IMPORTANT: Keep the code for this function in sync with the 
+-- version in creatur-wains
+instance Arbitrary UIDouble where
+  arbitrary = doubleToUI <$> choose interval
 
 -- IMPORTANT: Keep the code for this function in sync with the 
 -- version in creatur-wains
