@@ -10,6 +10,7 @@
 -- QuickCheck test utilities.
 --
 ------------------------------------------------------------------------
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module ALife.Creatur.Wain.TestUtils
   (
     arb8BitDouble,
@@ -39,16 +40,16 @@ instance Arbitrary UIDouble where
 -- IMPORTANT: Keep the code for this function in sync with the 
 -- version in creatur-wains
 arb8BitDouble :: (Double, Double) -> Gen Double
-arb8BitDouble interval = do
+arb8BitDouble interval' = do
   x <- arbitrary :: Gen Word8
-  return $ scaleFromWord8 interval x
+  return $ scaleFromWord8 interval' x
 
 -- IMPORTANT: Keep the code for this function in sync with the 
 -- version in creatur-wains
 arb8BitInt :: (Int, Int) -> Gen Int
-arb8BitInt interval = do
+arb8BitInt interval' = do
   x <- arbitrary :: Gen Word8
-  return $ scaleWord8ToInt interval x
+  return $ scaleWord8ToInt interval' x
 
 -- IMPORTANT: Keep the code for this function in sync with the 
 -- version in creatur-wains
