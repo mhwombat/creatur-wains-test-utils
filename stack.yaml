@@ -35,17 +35,16 @@ resolver: lts-12.14
 #  - wai
 packages:
 - .
-- location:
-   git: https://github.com/mhwombat/creatur-wains.git
-   commit: 5e18513682976564cd13a07a642ac8dd5c498068
 # Dependency packages to be pulled from upstream that are not in the resolver
 # using the same syntax as the packages field.
 # (e.g., acme-missiles-0.3)
 extra-deps:
 - creatur-5.9.27
-- creatur-wains-9.4.1
 - gray-extended-1.5.2
 - grid-7.8.9
+- som-10.0.1
+- git: git@github.com:mhwombat/creatur-wains.git
+  commit: 5e18513682976564cd13a07a642ac8dd5c498068
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
