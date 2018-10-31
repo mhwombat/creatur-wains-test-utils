@@ -19,46 +19,57 @@ module ALife.Creatur.Wain.TestUtils
     prop_genetic_round_trippable,
     prop_genetic_round_trippable2,
     prop_diploid_identity,
-    prop_show_read_round_trippable
+    prop_show_read_round_trippable,
+    sizedArbWeights,
+    sizedArbResponse,
+    arbResponse
   ) where
 
 import qualified ALife.Creatur.Genetics.BRGCWord8 as W8
 import ALife.Creatur.Genetics.Diploid (Diploid, express)
 import ALife.Creatur.Util (fromEither)
+import ALife.Creatur.Wain.PlusMinusOne (PM1Double, doubleToPM1)
+import ALife.Creatur.Wain.Response (Response(..))
 import ALife.Creatur.Wain.UnitInterval (UIDouble, interval, doubleToUI)
 import ALife.Creatur.Wain.Util (scaleFromWord8, scaleWord8ToInt)
+import ALife.Creatur.Wain.Weights (Weights, makeWeights)
 import Control.Monad.State.Lazy (runState)
 import Data.Serialize (Serialize, encode, decode)
 import Data.Word (Word8)
 import Test.QuickCheck
 
--- IMPORTANT: Keep the code for this function in sync with the 
+-- IMPORTANT: Keep the code for this function in sync with the
+-- version in creatur-wains
+instance Arbitrary PM1Double where
+  arbitrary = doubleToPM1 <$> choose interval
+
+-- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains
 instance Arbitrary UIDouble where
   arbitrary = doubleToUI <$> choose interval
 
--- IMPORTANT: Keep the code for this function in sync with the 
+-- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains
 arb8BitDouble :: (Double, Double) -> Gen Double
 arb8BitDouble interval' = do
   x <- arbitrary :: Gen Word8
   return $ scaleFromWord8 interval' x
 
--- IMPORTANT: Keep the code for this function in sync with the 
+-- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains
 arb8BitInt :: (Int, Int) -> Gen Int
 arb8BitInt interval' = do
   x <- arbitrary :: Gen Word8
   return $ scaleWord8ToInt interval' x
 
--- IMPORTANT: Keep the code for this function in sync with the 
+-- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains
 prop_serialize_round_trippable :: (Eq a, Serialize a) => a -> Property
 prop_serialize_round_trippable x = property $ x' == Right x
   where bs = encode x
         x' = decode bs
 
--- IMPORTANT: Keep the code for this function in sync with the 
+-- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains
 prop_genetic_round_trippable :: (Eq g, W8.Genetic g, Show g) =>
   (g -> g -> Bool) -> g -> Property
@@ -69,7 +80,7 @@ prop_genetic_round_trippable eq g = property $
         leftover = drop i x
         g' = fromEither (error "read returned Nothing") $ result
 
--- IMPORTANT: Keep the code for this function in sync with the 
+-- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains
 prop_genetic_round_trippable2
   :: W8.Genetic g => Int -> [Word8] -> g -> Property
@@ -78,15 +89,41 @@ prop_genetic_round_trippable2 n xs dummy = length xs >= n
   where Right g = W8.read xs
         xs' = W8.write (g `asTypeOf` dummy)
 
--- IMPORTANT: Keep the code for this function in sync with the 
+-- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains
 prop_diploid_identity :: Diploid g => (g -> g -> Bool) -> g -> Property
 prop_diploid_identity eq g = property $ express g g `eq` g
 
--- IMPORTANT: Keep the code for this function in sync with the 
+-- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains
 prop_show_read_round_trippable
   :: (Read a, Show a) => (a -> a -> Bool) -> a -> Property
 prop_show_read_round_trippable eq x
   = property $ (read . show $ x) `eq` x
-    
+
+-- IMPORTANT: Keep the code for this function in sync with the
+-- version in creatur-wains
+sizedArbWeights :: Int -> Gen Weights
+sizedArbWeights n = fmap makeWeights $ vectorOf n arbitrary
+
+-- IMPORTANT: Keep the code for this function in sync with the
+-- version in creatur-wains
+instance Arbitrary Weights where
+  arbitrary = sized sizedArbWeights
+
+-- IMPORTANT: Keep the code for this function in sync with the
+-- version in creatur-wains
+sizedArbResponse :: Gen a -> Int -> Gen (Response a)
+sizedArbResponse genAction n = do
+  nObjects <- choose (0, n)
+  let nConditions = n - nObjects
+  arbResponse nObjects nConditions genAction
+
+-- IMPORTANT: Keep the code for this function in sync with the
+-- version in creatur-wains
+arbResponse :: Int -> Int -> Gen a -> Gen (Response a)
+arbResponse nObjects nConditions genAction = do
+  s <- vectorOf nObjects arbitrary
+  a <- genAction
+  o <- vectorOf nConditions arbitrary
+  return $ Response s a o

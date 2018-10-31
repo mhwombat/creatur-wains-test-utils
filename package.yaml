@@ -1,0 +1,33 @@
+name:                creatur-wains-test-utils
+version:             1.2.1
+github:              "mhwombat/creatur-wains-test-utils"
+license:             BSD3
+author:              "Amy de Buitléir"
+maintainer:          "amy@nualeargais.ie"
+copyright:           "2018 Amy de Buitléir"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+synopsis:            Test utilities for users of creatur-wains.
+category:            AI
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/mhwombat/creatur-wains-test-utils#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+    source-dirs: src
+    dependencies:
+    - cereal
+    - creatur
+    - creatur-wains
+    - mtl
+    - QuickCheck
+
