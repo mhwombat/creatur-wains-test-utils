@@ -2,10 +2,10 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b44ef198e30c45573f8afc107a0ca9c25fb67cd7167ede74872f26e7bdb74811
+-- hash: a62b196d1c503b43c3c0a37c368e5440bc0d530fc616796a856118a5fbe10bf0
 
 name:           creatur-wains-test-utils
-version:        1.2.1
+version:        1.2.2
 synopsis:       Test utilities for users of creatur-wains.
 description:    Please see the README on GitHub at <https://github.com/mhwombat/creatur-wains-test-utils#readme>
 category:       AI

@@ -42,9 +42,9 @@ extra-deps:
 - creatur-5.9.27
 - gray-extended-1.5.2
 - grid-7.8.9
-- som-10.0.1
+- som-10.1.0
 - git: git@github.com:mhwombat/creatur-wains.git
-  commit: 5e18513682976564cd13a07a642ac8dd5c498068
+  commit: 890f00f2c4c5fe096522185e3ac7d147e6feab91
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
