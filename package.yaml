@@ -1,5 +1,5 @@
 name:                creatur-wains-test-utils
-version:             1.2.2
+version:             1.2.3
 github:              "mhwombat/creatur-wains-test-utils"
 license:             BSD3
 author:              "Amy de Buitléir"
@@ -28,6 +28,7 @@ library:
     - cereal
     - creatur
     - creatur-wains
+    - deepseq
     - mtl
     - QuickCheck
 

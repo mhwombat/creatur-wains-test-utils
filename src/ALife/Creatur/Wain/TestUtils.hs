@@ -26,17 +26,20 @@ module ALife.Creatur.Wain.TestUtils
   ) where
 
 import qualified ALife.Creatur.Genetics.BRGCWord8 as W8
-import ALife.Creatur.Genetics.Diploid (Diploid, express)
-import ALife.Creatur.Util (fromEither)
-import ALife.Creatur.Wain.PlusMinusOne (PM1Double, doubleToPM1)
-import ALife.Creatur.Wain.Response (Response(..))
-import ALife.Creatur.Wain.UnitInterval (UIDouble, interval, doubleToUI)
-import ALife.Creatur.Wain.Util (scaleFromWord8, scaleWord8ToInt)
-import ALife.Creatur.Wain.Weights (Weights, makeWeights)
-import Control.Monad.State.Lazy (runState)
-import Data.Serialize (Serialize, encode, decode)
-import Data.Word (Word8)
-import Test.QuickCheck
+import           ALife.Creatur.Genetics.Diploid   (Diploid, express)
+import           ALife.Creatur.Util               (fromEither)
+import           ALife.Creatur.Wain.PlusMinusOne  (PM1Double, doubleToPM1)
+import           ALife.Creatur.Wain.Response      (Response (..))
+import           ALife.Creatur.Wain.UnitInterval
+    (UIDouble, doubleToUI, interval)
+import           ALife.Creatur.Wain.Util
+    (scaleFromWord8, scaleWord8ToInt)
+import           ALife.Creatur.Wain.Weights       (Weights, makeWeights)
+import           Control.DeepSeq                  (NFData, deepseq)
+import           Control.Monad.State.Lazy         (runState)
+import           Data.Serialize                   (Serialize, decode, encode)
+import           Data.Word                        (Word8)
+import           Test.QuickCheck
 
 -- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains
@@ -100,6 +103,33 @@ prop_show_read_round_trippable
   :: (Read a, Show a) => (a -> a -> Bool) -> a -> Property
 prop_show_read_round_trippable eq x
   = property $ (read . show $ x) `eq` x
+
+-- IMPORTANT: Keep the code for this function in sync with the
+-- version in creatur-wains
+prop_diploid_expressable
+  :: (Diploid g, W8.Genetic g, NFData g) => g -> g -> Property
+prop_diploid_expressable a b = property $ deepseq (express a b) True
+
+-- IMPORTANT: Keep the code for this function in sync with the
+-- version in creatur-wains
+prop_diploid_readable
+  :: (Diploid g, W8.Genetic g, NFData g)
+    => g -> g -> Property
+prop_diploid_readable a b = property $ deepseq (c `asTypeOf` a) True
+  where ga = W8.write a
+        gb = W8.write b
+        (Right c) = W8.runDiploidReader W8.getAndExpress (ga, gb)
+
+-- IMPORTANT: Keep the code for this function in sync with the
+-- version in creatur-wains
+prop_makeSimilar_works
+  :: (a -> a -> UIDouble) -> (a -> UIDouble -> a -> a) -> a -> UIDouble
+    -> a -> Property
+prop_makeSimilar_works diff makeSimilar x r y
+  = property $ diffAfter <= diffBefore
+  where diffBefore = diff x y
+        y' = makeSimilar x r y
+        diffAfter = diff x y'
 
 -- IMPORTANT: Keep the code for this function in sync with the
 -- version in creatur-wains

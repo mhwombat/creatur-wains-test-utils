@@ -2,10 +2,10 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a62b196d1c503b43c3c0a37c368e5440bc0d530fc616796a856118a5fbe10bf0
+-- hash: 2f20c90f014048b64899eb62b14d9914754fb60a51eac5c8a6d39a175409d48b
 
 name:           creatur-wains-test-utils
-version:        1.2.2
+version:        1.2.3
 synopsis:       Test utilities for users of creatur-wains.
 description:    Please see the README on GitHub at <https://github.com/mhwombat/creatur-wains-test-utils#readme>
 category:       AI
@@ -39,5 +39,6 @@ library
     , cereal
     , creatur
     , creatur-wains
+    , deepseq
     , mtl
   default-language: Haskell2010
