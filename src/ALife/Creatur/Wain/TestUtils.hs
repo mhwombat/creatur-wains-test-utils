@@ -20,6 +20,9 @@ module ALife.Creatur.Wain.TestUtils
     prop_genetic_round_trippable2,
     prop_diploid_identity,
     prop_show_read_round_trippable,
+    prop_diploid_expressable,
+    prop_diploid_readable,
+    prop_makeSimilar_works,
     sizedArbWeights,
     sizedArbResponse,
     arbResponse
