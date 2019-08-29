@@ -3,7 +3,7 @@
 result
 dist
 dist-newstyle
-.ghc.environment
+.ghc.environment*
 
 # Backup files
 *~
