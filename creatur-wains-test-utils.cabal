@@ -32,7 +32,7 @@ library
     , base >=4.7 && <5
     , cereal >= 0.5.7 && < 0.6
     , creatur >= 5.9.27 && < 5.10
-    , creatur-wains ==9.5.* || == 9.6.*
+    , creatur-wains ==9.5.* || == 9.6.* || == 9.7.*
     , deepseq >= 1.4.3 && < 1.5
     , mtl >= 2.2.2 && < 2.3
   default-language: Haskell2010
