@@ -1,5 +1,7 @@
 # Changelog for creatur-wains-test-utils
 
+1.2.6 Expanded constraints to accommodate newer version of creatur-wains.
+
 1.2.5 Expanded constraints to accommodate newer version of creatur-wains.
 
 1.2.4 Revamped to build under NixOS + cabal-install.
